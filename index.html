@@ -1,0 +1,149 @@
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const card = document.getElementById("card");
+
+  /* ===== HEART HELPERS ===== */
+  function spawnSoftHeart() {
+    const h = document.createElement("div");
+    h.className = "soft-heart";
+    h.innerText = "💗";
+    h.style.left = Math.random() * 60 + 20 + "vw";
+    h.style.top = "65vh";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 2500);
+  }
+
+  function unleashFinalChaos() {
+    const emojis = ["❤️","💖","💘","💕","💞","🎉","✨"];
+    setInterval(() => {
+      const e = document.createElement("div");
+      e.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+      e.style.position = "fixed";
+      e.style.left = Math.random()*100 + "vw";
+      e.style.top = "-20px";
+      e.style.fontSize = (18 + Math.random()*28) + "px";
+      e.style.animation = "fall 3.5s linear forwards";
+      document.body.appendChild(e);
+      setTimeout(() => e.remove(), 3500);
+    }, 120);
+  }
+
+  /* ===== QUESTION 1 ===== */
+  function question1() {
+    card.innerHTML = `
+      <h1>Question 1 🧠</h1>
+      <p>Solve this quadratic equation:</p>
+      <p><strong>x² − 143x + 143 = 0</strong></p>
+
+      <input id="answer" placeholder="Enter your answer">
+      <br><br>
+      <button id="submitBtn">Submit ✨</button>
+      <p id="feedback"></p>
+    `;
+
+    document.getElementById("submitBtn").onclick = checkAnswer;
+  }
+
+  function checkAnswer() {
+    const val = document.getElementById("answer").value.trim();
+    const fb = document.getElementById("feedback");
+
+    if (val === "143") {
+      fb.innerHTML = `
+        <strong style="color:#ff4d6d;">
+          Yes, you are absolutely correct ❤️<br>
+          I (1) LOVE (4) YOU (3)
+        </strong><br><br>
+        <button id="continueBtn">Continue ➡️</button>
+      `;
+      document.getElementById("continueBtn").onclick = question2;
+    } else {
+      fb.innerHTML = `<span style="color:red;">Try again 😌</span>`;
+    }
+  }
+
+  /* ===== QUESTION 2 ===== */
+  function question2() {
+    card.innerHTML = `
+      <h1>🎶</h1>
+      <p>When I think of you,<br>this is what my heart sings ❤️</p>
+
+      <div id="lyrics" style="margin:20px 0; color:#ff4d6d; min-height:60px;"></div>
+
+      <div style="margin:20px 0;">
+        <iframe style="border-radius:12px"
+          src="https://open.spotify.com/embed/track/4XGmJ7y9x6d4qN1c2uK9zS"
+          width="100%" height="80" frameBorder="0"
+          allow="encrypted-media">
+        </iframe>
+      </div>
+
+      <button id="finalBtn">Continue ➡️</button>
+    `;
+
+    playLyrics();
+    document.getElementById("finalBtn").onclick = finalQuestion;
+  }
+
+  function playLyrics() {
+    const lines = [
+      "Tere liye hi saansein meri…",
+      "Tere liye hi dhadkan chale ❤️",
+      "Har raasta tujh tak jaata hai…",
+      "Bas tu hi meri manzil hai ✨"
+    ];
+
+    const box = document.getElementById("lyrics");
+    let i = 0;
+
+    const interval = setInterval(() => {
+      if (i < lines.length) {
+        box.classList.remove("fade");
+        void box.offsetWidth;
+        box.classList.add("fade");
+        box.innerText = lines[i];
+        spawnSoftHeart();
+        spawnSoftHeart();
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 2000);
+  }
+
+  /* ===== FINAL QUESTION ===== */
+  function finalQuestion() {
+    card.innerHTML = `
+      <h1>💌</h1>
+      <p style="font-size:18px;">
+        My Dearest Ashi,<br>
+        will you be my Valentine? ❤️
+      </p>
+
+      <button id="noBtn">No 🙈</button>
+      <button id="yesBtn">Yes 💖</button>
+    `;
+
+    document.getElementById("noBtn").onmouseover = (e) => {
+      e.target.style.transform =
+        \`translate(\${Math.random()*200-100}px,\${Math.random()*200-100}px)\`;
+    };
+
+    document.getElementById("yesBtn").onclick = () => {
+      card.innerHTML = `
+        <h1>🎉💖</h1>
+        <p>Thanks for choosing me.</p>
+        <p style="margin-top:20px;font-weight:600;">
+          With love,<br>Yogesh 💌
+        </p>
+      `;
+      unleashFinalChaos();
+    };
+  }
+
+  /* ===== START APP ===== */
+  question1();
+
+});
+</script>
