@@ -1,155 +1,134 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>For Ashi</title>
+<meta charset="UTF-8">
+<title>For Ashi ❤️</title>
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-    }
+<style>
+/* ---------- BASE ---------- */
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family: Arial, sans-serif;
+  overflow:hidden;
+}
 
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      width: 320px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
+/* ---------- CARD ---------- */
+.card {
+  background:white;
+  padding:30px;
+  width:340px;
+  border-radius:22px;
+  text-align:center;
+  box-shadow:
+    0 0 25px rgba(255,77,109,0.6),
+    0 0 60px rgba(255,182,193,0.6);
+  z-index:2;
+  animation: fadeIn 0.8s ease;
+}
 
-    button {
-      margin: 10px;
-      padding: 10px 18px;
-      border-radius: 20px;
-      border: none;
-      cursor: pointer;
-      font-size: 15px;
-      background: #ff4d6d;
-      color: white;
-    }
+@keyframes fadeIn {
+  from { opacity:0; transform:scale(0.9); }
+  to { opacity:1; transform:scale(1); }
+}
 
-    input {
-      padding: 10px;
-      width: 80%;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      margin-top: 10px;
-    }
+/* ---------- INPUT & BUTTONS ---------- */
+input {
+  padding:10px;
+  width:80%;
+  border-radius:10px;
+  border:1px solid #ccc;
+  margin-top:10px;
+  font-size:15px;
+}
 
-    .heart {
-      position: fixed;
-      top: -20px;
-      font-size: 20px;
-      animation: fall 4s linear forwards;
-    }
+button {
+  margin:8px;
+  padding:10px 18px;
+  border:none;
+  border-radius:20px;
+  font-size:15px;
+  cursor:pointer;
+  background:#ff4d6d;
+  color:white;
+  transition:transform 0.2s;
+}
+button:hover { transform:scale(1.05); }
 
-    @keyframes fall {
-      to {
-        transform: translateY(110vh);
-        opacity: 0;
-      }
-    }
-  </style>
+/* ---------- BACKGROUND HEARTS ---------- */
+.heart {
+  position:fixed;
+  top:-20px;
+  animation: fall linear forwards;
+  pointer-events:none;
+}
+
+@keyframes fall {
+  to { transform:translateY(110vh); opacity:0; }
+}
+
+/* ---------- CONFETTI / FIRE ---------- */
+.fx {
+  position:fixed;
+  top:-20px;
+  pointer-events:none;
+  animation: fall 4s linear forwards;
+}
+
+/* ---------- SHAKE ---------- */
+.shake {
+  animation: shake 0.25s;
+}
+@keyframes shake {
+  0% { transform:translateX(0); }
+  25% { transform:translateX(-5px); }
+  50% { transform:translateX(5px); }
+  75% { transform:translateX(-5px); }
+  100% { transform:translateX(0); }
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 480px) {
+  .card { width:90%; }
+  button { width:90%; }
+}
+</style>
 </head>
 
 <body>
 
 <div class="card" id="card"></div>
 
+<!-- Soft instrumental music -->
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/10/25/audio_7c3b2d7a8c.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const card = document.getElementById("card");
+document.addEventListener("DOMContentLoaded",()=>{
 
-  function hearts() {
-    setInterval(() => {
-      const h = document.createElement("div");
-      h.className = "heart";
-      h.innerText = "❤";
-      h.style.left = Math.random() * 100 + "vw";
-      document.body.appendChild(h);
-      setTimeout(() => h.remove(), 4000);
-    }, 300);
+const card = document.getElementById("card");
+const music = document.getElementById("bgMusic");
+let musicStarted = false;
+
+/* ---------- MUSIC START ---------- */
+function startMusic(){
+  if(!musicStarted){
+    music.play().catch(()=>{});
+    musicStarted = true;
   }
+}
 
-  // QUESTION 1
-  function question1() {
-    card.innerHTML = `
-      <h2>Question 1</h2>
-      <p>Solve this equation:</p>
-      <p><b>x*x - 143*x + 143 = 0</b></p>
-
-      <input id="ans" placeholder="Enter answer">
-      <br>
-      <button id="submit">Submit</button>
-      <p id="msg"></p>
-    `;
-
-    document.getElementById("submit").onclick = () => {
-      const val = document.getElementById("ans").value.trim();
-      if (val === "143") {
-        card.innerHTML = `
-          <p><b>Yes, you are absolutely correct</b></p>
-          <p>I (1) LOVE (4) YOU (3)</p>
-          <button id="next1">Continue</button>
-        `;
-        document.getElementById("next1").onclick = question2;
-      } else {
-        document.getElementById("msg").innerText = "Try again";
-      }
-    };
-  }
-
-  // QUESTION 2
-  function question2() {
-    card.innerHTML = `
-      <h2>Question 2</h2>
-      <p>When I think of you, this is what my heart sings</p>
-      <p style="color:#ff4d6d">
-        Tere liye hi jeeta hoon<br>
-        Tere liye hi saansein
-      </p>
-      <button id="next2">Continue</button>
-    `;
-
-    document.getElementById("next2").onclick = finalQuestion;
-  }
-
-  // FINAL
-  function finalQuestion() {
-    card.innerHTML = `
-      <h2>My Dearest Ashi</h2>
-      <p>Will you be my Valentine?</p>
-      <button id="yes">Yes</button>
-      <button id="no">No</button>
-    `;
-
-    document.getElementById("no").onmouseover = (e) => {
-      e.target.style.position = "absolute";
-      e.target.style.left = Math.random() * 200 + "px";
-      e.target.style.top = Math.random() * 200 + "px";
-    };
-
-    document.getElementById("yes").onclick = () => {
-      card.innerHTML = `
-        <h2>Thank you for choosing me</h2>
-        <p>With love,<br><b>Yogesh</b></p>
-      `;
-      hearts();
-    };
-  }
-
-  // START
-  question1();
-});
-</script>
-
-</body>
-</html>
+/* ---------- HEART BACKGROUND ---------- */
+setInterval(()=>{
+  const h = document.createElement("div");
+  h.className="heart";
+  h.innerText="❤";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=12+Math.random()*26+"px";
+  h.style.animationDuration=3+Math.random()*3+"s";
+  document.body.a
